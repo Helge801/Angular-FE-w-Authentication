@@ -19,16 +19,16 @@ export class UserService {
       LastName: user.LastName
     }
     var reqHeader = new HttpHeaders({'No-Auth':'True'});
-    return this.http.post(this.rootUrl + '/api/User/Register', body);
+    return this.http.post(this.rootUrl + '/api/User/Register', body, {headers : reqHeader});
   }
 
   userAuthentication(userName,password){
     var data = "username="+userName+"&password="+password+"&grant_type=password";
-    var reqHeader = new HttpHeaders({'Content-Type':'application/x-www-urlencoded'});
+    var reqHeader = new HttpHeaders({'Content-Type':'application/x-www-urlencoded','No-Auth':'True'});
     return this.http.post(this.rootUrl+'/token',data,{headers: reqHeader});
   }
 
   getUserClaims(){
-    return this.http.get(this.rootUrl+'/api/GetUserClaims',{headers: new HttpHeaders({'Authorization':'Bearer '+localStorage.getItem('userToken')})});
+    return this.http.get(this.rootUrl+'/api/GetUserClaims');
   }
 }
