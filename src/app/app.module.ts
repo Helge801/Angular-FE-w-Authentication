@@ -13,6 +13,7 @@ import { SignInComponent } from './user/sign-in/sign-in.component';
 import { HomeComponent } from './home/home.component';
 import { SignUpComponent } from './user/sign-up/sign-up.component';
 import { appRoutes } from './routes';
+import { AuthGuard } from './auth/auth.guard';
 
 
 @NgModule({
@@ -31,7 +32,9 @@ import { appRoutes } from './routes';
     BrowserAnimationsModule,
     RouterModule.forRoot(appRoutes)
   ],
-  providers: [UserService],
+  providers: [
+    UserService,
+    AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
