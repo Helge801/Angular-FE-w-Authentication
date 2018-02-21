@@ -40,19 +40,22 @@ export class HomeComponent implements OnInit {
   }
 
   findWidth(event){
-    return Math.floor((100.0 / event.target.offsetWidth) * event.offsetX);
+    return Math.floor((600.0 / event.target.offsetWidth) * event.offsetX);
   }
 
   musicLoop(){
     this.renderer.addClass(this.music_box,"running_box");
     var synth = new Tone.Synth().toMaster();
-    this.pointCollection.forEach((point)=>{
-      setTimeout(() => {
-        synth.triggerAttackRelease(this.translateTone(point[1]), '16n');
-      },400.0*point[1]);
-    });
     setTimeout(() => {
-      this.musicLoop()
+      this.pointCollection.forEach((point)=>{
+        setTimeout(() => {
+          synth.triggerAttackRelease(this.translateTone(point[1]), '16n');
+        },6.0*point[0]);
+      });
+    }, 100);
+    setTimeout(() => {
+      this.renderer.removeClass(this.music_box,"running_box");
+      setTimeout(()=>{this.musicLoop();},100);
     }, 4000);
   }
 

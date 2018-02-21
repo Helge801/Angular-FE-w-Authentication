@@ -48,6 +48,7 @@ div.error-message i{
 #music_box{
     margin: auto;
     overflow: normal;
+    border: #38547b solid 4px;
 }
 
 #music_box::Before {
