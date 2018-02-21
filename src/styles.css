@@ -44,3 +44,34 @@ div.error-message i{
     pointer-events: none;
     transform: translate(-50%,-50%);
 }
+
+#music_box{
+    margin: auto;
+    overflow: normal;
+}
+
+#music_box::Before {
+    height: 100%;
+    width: 2px;
+    position: absolute;
+    left: 0%;
+    top: 0px;
+    background-color: red;
+    display: inline-block;
+    content: "";
+    transition: all 0s;
+}
+
+#music_box.running_box::Before {
+    height: 100%;
+    width: 2px;
+    position: absolute;
+    left: 100%;
+    top: 0px;
+    background-color: red;
+    display: inline-block;
+    content: "";
+    transition: all 4s linear;
+}
+
+

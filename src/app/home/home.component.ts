@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Renderer, Renderer2 } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '../shared/user.service';
 import * as Tone from 'tone';
 import { Identifiers } from '@angular/compiler';
-import { setTimeout } from 'timers';
 
 @Component({
   selector: 'app-home',
@@ -14,16 +13,21 @@ export class HomeComponent implements OnInit {
   userClaims : any;
   pointCollection : number[][];
   ctx : AudioContext;
+  music_box : any;
+  unStarted : boolean;
 
-  constructor(private router : Router, private userService : UserService) { 
+  constructor(private router : Router, private userService : UserService, private renderer : Renderer2) { 
     this.pointCollection = []
-    this.musicLoop();
+    this.unStarted = true;
    }
 
   ngOnInit() {
     this.userService.getUserClaims().subscribe((data : any)=>{
       this.userClaims = data;
     });
+  }
+
+  ngAfterViewInit(){
   }
 
   Logout(){
@@ -40,14 +44,15 @@ export class HomeComponent implements OnInit {
   }
 
   musicLoop(){
+    this.renderer.addClass(this.music_box,"running_box");
     var synth = new Tone.Synth().toMaster();
     this.pointCollection.forEach((point)=>{
       setTimeout(() => {
         synth.triggerAttackRelease(this.translateTone(point[1]), '16n');
-      },40.0*point[1]);
+      },400.0*point[1]);
     });
     setTimeout(() => {
-      this.musicLoop();
+      this.musicLoop()
     }, 4000);
   }
 
@@ -59,6 +64,15 @@ export class HomeComponent implements OnInit {
     this.pointCollection.push([this.findWidth(event),this.findHeight(event)]);
     console.log(this.pointCollection);
     event.target.insertAdjacentHTML('beforeend', `<div class="dot" style="left: ${event.offsetX}px; top: ${event.offsetY}px;"></div>`);
+    if (this.music_box == undefined){
+      this.music_box = event.target;
+    }
+    // this.renderer.setElementClass(this.music_box,"running_box",true);
+    if (this.unStarted){
+      this.unStarted = false;
+      this.musicLoop();
+    }
+    console.log(this.pointCollection);
   }
 
 }
